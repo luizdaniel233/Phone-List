@@ -4,11 +4,13 @@
         <link rel= "stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
         <style>
             .jumbotron{
-                width: 500px;
+                background-color: black;
+                width: 800px;
                 text-align: center;
                 margin-top: 20px;
                 margin: auto;
                 margin-right: auto;
+                
             }
             .table{
                 margin-top: 20px;  
@@ -16,17 +18,35 @@
 
             .form-control{
                 margin-bottom: 5px;
+                background-color: aliceblue;
+                font-weight: bold;
+
+            }
+            .nameT{
+                color: white;
+                text-align: center;
+            }
+            .nameP{
+                font-weight: bold;
+                color: white;
             }
         </style>
         <script src="angular/angular.js"></script>
         <script>
             angular.module("listPhone",[]);
             angular.module("listPhone").controller("listPhoneCtrl",function($scope){
-                $scope.app = "Phone List (92)";
+                $scope.app = "Phone List";
                 $scope.contatos = [
-                    {nome:"Luiz Daniel",telefone:"99382-2354"},
-                    {nome:"Leo Danilo",telefone:"99141-1594"},
-                    {nome:"Lane Santos",telefone:"99227-4652"}
+                    {nome:"Luiz Daniel",telefone:"99382-2354",operadora:"Vivo",code:15},
+                    {nome:"Leo Danilo",telefone:"99141-1594",operadora:"Oi",code:14},
+                    {nome:"Lane Santos",telefone:"99227-4652",operadora:"Claro",code:19}
+                ];
+                $scope.oper = [
+                    {nome: "Oi",codigo: 14,categoria:"Cellphone"},
+                    {nome: "Vivo",codigo: 15,categoria:"Cellphone"},
+                    {nome: "Tim",codigo:16,categoria:"Fixed"},
+                    {nome: "Claro",codigo:19,categoria:"Fixed"}
+                    
                 ];
                 $scope.adicionar = function(contato){
                     $scope.contatos.push(angular.copy(contato));
@@ -37,22 +57,31 @@
     </head>
     <body ng-controller="listPhoneCtrl">
       <div class = "jumbotron">
-          <h3 ng-bind="app"></h3>
+          <h3 class = "nameP" ng-bind="app"></h3>
           <table class = "table table-striped">
               <tr>
-                  <th>Name</th>
-                  <th>Telephone</th>
+                  <th class = "nameT">Name</th>
+                  <th class = "nameT">Telephone</th>
+                  <th class = "nameT">Operator</th>
+                  <th class = "nameT">Code Of Operator</th>
               </tr>
               <tr ng-repeat="contato in contatos">
-                <td>{{contato.nome}}</td>
-                <td>{{contato.telefone}}</td>
+                <td class = "nameT">{{contato.nome}}</td>
+                <td class = "nameT">{{contato.telefone}}</td>
+                <td class = "nameT">{{contato.operadora}}</td>
+                <td class = "nameT">{{contato.code}}</td>
+                <td class = "nameT">{{contato.oper.nome}}</td>
+                <td class = "nameT">{{contato.oper.codigo}}</td>
               </tr>
           </table>
           <hr/>
-          <input class = "form-control" type="text" ng-model="contato.nome" placeholder="Nome"/>
-          <input class = "form-control" type="text" ng-model="contato.telefone" placeholder="Telefone"/>
-          <button class = "btn btn-primary" ng-click= "adicionar(contato)">Adicionar</button>
-
+          <input class = "form-control" type="text" ng-model="contato.nome" placeholder="Name"/>
+          <input class = "form-control" type="text" ng-model="contato.telefone" placeholder="Telephone"/>
+          <select class = "form-control" ng-model="contato.oper" ng-options ="oper.nome group by oper.categoria for oper in oper">
+              <option value="">Select of Operator</option>
+          </select>
+          <button class = "btn btn-primary" ng-click= "adicionar(contato)"ng-disabled="!contato.nome || !contato.telefone">Add contact</button>
+          
       </div>
     </body>
 </html>
